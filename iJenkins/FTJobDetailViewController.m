@@ -80,11 +80,11 @@
         _isLoadingDetail = YES;
         FTAPIJobDetailDataObject *jobDetailObject = [[FTAPIJobDetailDataObject alloc] initWithJobName:_job.name jobMethod:_job.methodName];
         [FTAPIConnector connectWithObject:jobDetailObject andOnCompleteBlock:^(id<FTAPIDataAbstractObject> dataObject, NSError *error) {
-            _isLoadingDetail = NO;
-            _job.jobDetail = jobDetailObject;
+            self->_isLoadingDetail = NO;
+            self->_job.jobDetail = jobDetailObject;
             [self.tableView reloadData];
-            [_refreshControl endRefreshing];
-            _isLoadingDetail = NO;
+            [self->_refreshControl endRefreshing];
+            self->_isLoadingDetail = NO;
         }];
     }
 }
@@ -104,9 +104,9 @@
                 FTAPIJobDetailBuildDataObject *build = [_job.jobDetail.builds objectAtIndex:0];
                 if (!_job.jobDetail.lastBuild.buildDetail) {
                     [build loadBuildDetailWithSuccessBlock:^(FTAPIBuildDetailDataObject *data) {
-                        [_job.jobDetail.lastBuild loadBuildDetailWithSuccessBlock:^(FTAPIBuildDetailDataObject *data) {
+                        [self->_job.jobDetail.lastBuild loadBuildDetailWithSuccessBlock:^(FTAPIBuildDetailDataObject *data) {
                             [self.tableView reloadData];
-                        } forJobName:_job.name jobMethod:_job.methodName];
+                        } forJobName:self->_job.name jobMethod:self->_job.methodName];
                     } forJobName:_job.name jobMethod:_job.methodName];
                 }
                 else {

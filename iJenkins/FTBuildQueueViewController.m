@@ -58,7 +58,7 @@
     _isLoadingQueue = YES;
     FTAPIBuildQueueDataObject *queueObject = [[FTAPIBuildQueueDataObject alloc] init];
     [FTAPIConnector connectWithObject:queueObject andOnCompleteBlock:^(id<FTAPIDataAbstractObject> dataObject, NSError *error) {
-        BOOL reload = (queueObject.items.count != _queue.count);
+        BOOL reload = (queueObject.items.count != self->_queue.count);
         NSMutableArray *arr = [NSMutableArray array];
         if (queueObject.items.count > 0) {
             for (FTAPIBuildQueueItemDataObject *job in queueObject.items) {
@@ -73,12 +73,12 @@
             }
         }
         if (reload) {
-            _queue = arr;
+            self->_queue = arr;
             [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
         }
-        _isLoadingQueue = NO;
+        self->_isLoadingQueue = NO;
         [self checkLoading];
-        if (_queue.count > 10) {
+        if (self->_queue.count > 10) {
             [self createExecutorLink];
         }
     }];
@@ -86,8 +86,8 @@
     _isLoadingComputers = YES;
     FTAPIComputerObject *buildsObject = [[FTAPIComputerObject alloc] init];
     [FTAPIConnector connectWithObject:buildsObject andOnCompleteBlock:^(id<FTAPIDataAbstractObject> dataObject, NSError *error) {
-        _computers = buildsObject.computers;
-        _isLoadingComputers = NO;
+        self->_computers = buildsObject.computers;
+        self->_isLoadingComputers = NO;
         [self.tableView reloadData];
         [self checkLoading];
     }];

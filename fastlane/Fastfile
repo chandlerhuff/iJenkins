@@ -32,6 +32,15 @@ platform :ios do
       ipa_path: "./fastlane/builds/iJenkins.ipa",
       notifications: true
     )
+    appcenter_upload(
+      api_token: "#{ENV['APPCENTER_API_TOKEN']}",
+      owner_name: "bludesign",
+      app_name: "iJenkins",
+      ipa: "./fastlane/builds/iJenkins.ipa",
+      dsym: "./fastlane/builds/iJenkins.app.dSYM.zip",
+      release_notes: "#{changelog.to_s}",
+      group: "Internal"
+    )
   end
 
   desc "Generate and Download Certificates and Profiles"

@@ -336,11 +336,11 @@
                 [r startMonitoringNetworkReachabilityWithHandler:^(GCNetworkReachabilityStatus status) {
                     __block FTAccountCellReachabilityStatus s = (status == GCNetworkReachabilityStatusNotReachable) ? FTAccountCellReachabilityStatusUnreachable : FTAccountCellReachabilityStatusReachable;
                     if (status == GCNetworkReachabilityStatusNotReachable) {
-                        _reachabilityStatusCache[key] = @(s);
+                        self->_reachabilityStatusCache[key] = @(s);
                         [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
                     }
                     else {
-                        _reachabilityStatusCache[key] = @(s);
+                        self->_reachabilityStatusCache[key] = @(s);
                         [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
                         
                         // TODO: Finish the API request to check server API, not just reachability

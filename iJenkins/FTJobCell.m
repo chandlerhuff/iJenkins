@@ -150,7 +150,7 @@
         [self setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
         
         [UIView animateWithDuration:0.15 animations:^{
-            [_buildScoreView setAlpha:1];
+            [self->_buildScoreView setAlpha:1];
         }];
     }
 }

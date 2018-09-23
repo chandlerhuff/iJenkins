@@ -26,7 +26,7 @@
 - (void)loadData {
     FTAPIPluginManagerDataObject *pluginObject = [[FTAPIPluginManagerDataObject alloc] init];
     [FTAPIConnector connectWithObject:pluginObject andOnCompleteBlock:^(id<FTAPIDataAbstractObject> dataObject, NSError *error) {
-        _plugins = pluginObject.plugins;
+        self->_plugins = pluginObject.plugins;
         [self.tableView reloadData];
     }];
 }

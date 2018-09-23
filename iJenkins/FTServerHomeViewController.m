@@ -53,9 +53,9 @@
         }
         [FTAPIConnector connectWithObject:_serverObject andOnCompleteBlock:^(id<FTAPIDataAbstractObject> dataObject, NSError *error) {
             if (error) {
-                if (_serverObject.response.statusCode == HTTPCode401Unauthorised || _serverObject.response.statusCode == HTTPCode403Forbidden) {
+                if (self->_serverObject.response.statusCode == HTTPCode401Unauthorised || self->_serverObject.response.statusCode == HTTPCode403Forbidden) {
                     [dFTLoginAlert showLoginDialogWithLoginBlock:^(NSString *username, NSString *password) {
-                        _serverObject = nil;
+                        self->_serverObject = nil;
                         [self loadData];
                     } andCancelBlock:^{
                         [self.navigationController popViewControllerAnimated:YES];
@@ -73,43 +73,43 @@
                 if ([FTAccountsManager sharedManager].selectedAccount.accountType == FTAccountTypeKeychain) {
                     [[FTAccountsManager sharedManager] updateAccount:[FTAccountsManager sharedManager].selectedAccount];
                 }
-                [_overviewCell setJobsStats:_serverObject.jobsStats];
-                if (_serverObject.jobs.count > 0) {
-                    _isDataAvailable = YES;
+                [self->_overviewCell setJobsStats:self->_serverObject.jobsStats];
+                if (self->_serverObject.jobs.count > 0) {
+                    self->_isDataAvailable = YES;
                 }
                 else {
-                    _isDataAvailable = NO;
+                    self->_isDataAvailable = NO;
                 }
-                if (_serverObject.views && (_serverObject.views.count > 0)) {
-                    _views = _serverObject.views;
+                if (self->_serverObject.views && (self->_serverObject.views.count > 0)) {
+                    self->_views = self->_serverObject.views;
                 }
                 
-                _jobs = [NSArray arrayWithArray:_serverObject.jobs];
+                self->_jobs = [NSArray arrayWithArray:self->_serverObject.jobs];
                 [super.tableView reloadData];
                 [self setTitle:[FTAccountsManager sharedManager].selectedAccount.name];
                 
-                if (_serverObject.views.count > 1) {
-                    if (!_selectedView) {
+                if (self->_serverObject.views.count > 1) {
+                    if (!self->_selectedView) {
                         // Select the view named 'All'
                         
                         // Array with all localizations of 'All' (en, da/de/nl, es, fr, ja, ru, zh_TW, it, pt_BR, tr)
                         NSArray *allNames = @[@"All", @"Alle", @"Todo", @"Tous", @"\u3059\u3079\u3066", @"\u0412\u0441\u0435", @"\u5168\u90e8", @"Tutto", @"Tudo", @"Hepsi"];
                         
-                        for (FTAPIServerViewDataObject *v in _views) {
+                        for (FTAPIServerViewDataObject *v in self->_views) {
                             if ([allNames containsObject:v.name]) {
-                                _selectedView=v;
+                                self->_selectedView=v;
                                 break;
                             }
                         }
-                        if (!_selectedView) {
+                        if (!self->_selectedView) {
                             // No view named 'All' found, fall back to first view in the list
-                            _selectedView = [_views objectAtIndex:0];
+                            self->_selectedView = [self->_views objectAtIndex:0];
                         }
                     }
                 }
                 
                 [NSTimer scheduledTimerWithTimeInterval:0.3 target:self selector:@selector(createTopButtons) userInfo:nil repeats:NO];
-                [_refreshControl endRefreshing];
+                [self->_refreshControl endRefreshing];
             }
         }];
     }

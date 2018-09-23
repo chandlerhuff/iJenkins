@@ -121,11 +121,11 @@
     _isLoading = YES;
     FTAPIBuildDetailDataObject *buildObject = [[FTAPIBuildDetailDataObject alloc] initWithJobName:jobName jobMethod:jobMethod andBuildNumber:_number];
     [FTAPIConnector connectWithObject:buildObject andOnCompleteBlock:^(id<FTAPIDataAbstractObject> dataObject, NSError *error) {
-        _buildDetail = buildObject;
+        self->_buildDetail = buildObject;
         if (success) {
             success(buildObject);
         }
-        _isLoading = NO;
+        self->_isLoading = NO;
     }];
 }
 

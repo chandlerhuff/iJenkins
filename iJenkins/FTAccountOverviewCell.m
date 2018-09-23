@@ -139,8 +139,8 @@
                           delay:0.0
                         options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
-                         _descriptionLabel.alpha = 1.0f;
-                         _countLabel.alpha = 1.0f;
+                         self->_descriptionLabel.alpha = 1.0f;
+                         self->_countLabel.alpha = 1.0f;
                      } completion:NULL];
 }
 
@@ -200,7 +200,7 @@
     [_chartOverlay setSliceColor:[self colorForItemAtIndex:index]];
     [_chartOverlay setNeedsDisplay];
     [UIView animateWithDuration:0.15 animations:^{
-        [_chartOverlay setAlpha:1];
+        [self->_chartOverlay setAlpha:1];
     }];
 }
 
@@ -219,7 +219,7 @@
     
     CGAffineTransform t = CGAffineTransformMakeScale(1, 1);
     [UIView animateWithDuration:0.15 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-        [_chartCenter setTransform:t];
+        [self->_chartCenter setTransform:t];
     } completion:^(BOOL finished) {
         
     }];
@@ -235,8 +235,8 @@
     CGAffineTransform t = CGAffineTransformMakeScale(1.0, 1.0);
     [self showTotalJobs];
     [UIView animateWithDuration:0.15 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-        [_chartCenter setTransform:t];
-        [_chartOverlay setAlpha:0];
+        [self->_chartCenter setTransform:t];
+        [self->_chartOverlay setAlpha:0];
     } completion:^(BOOL finished) {
         [UIView animateWithDuration:0.3 animations:^{
             

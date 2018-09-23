@@ -31,7 +31,7 @@
     _isLoading = YES;
     _userObject = [[FTAPIUserDetailDataObject alloc] initWithNickName:_nickName];
     [FTAPIConnector connectWithObject:_userObject andOnCompleteBlock:^(id<FTAPIDataAbstractObject> dataObject, NSError *error) {
-        _isLoading = NO;
+        self->_isLoading = NO;
         [self.tableView reloadData];
         
         if ([self canSendMail]) {
@@ -158,8 +158,8 @@
         [FTAPIConnector connectWithObject:_userObject andOnCompleteBlock:^(id<FTAPIDataAbstractObject> dataObject, NSError *error) {
             // TODO: Improve error handling
 //            if (!error) {
-                if ([_delegate respondsToSelector:@selector(userDetailViewController:didDeleteUser:)]) {
-                    [_delegate userDetailViewController:self didDeleteUser:_userObject];
+            if ([self->_delegate respondsToSelector:@selector(userDetailViewController:didDeleteUser:)]) {
+                [self->_delegate userDetailViewController:self didDeleteUser:self->_userObject];
                 }
                 [self.navigationController popViewControllerAnimated:YES];
 //            }

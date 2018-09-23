@@ -37,8 +37,8 @@
     FTAPIBuildConsoleOutputDataObject *loadObject = [[FTAPIBuildConsoleOutputDataObject alloc] initWithJobName:_jobName jobMethod:_jobMethod andBuildNumber:_buildNumber];
     [FTAPIConnector connectWithObject:loadObject andOnCompleteBlock:^(id<FTAPIDataAbstractObject> dataObject, NSError *error) {
         if (error) {
-            if (_errorCount <= 3) {
-                _errorCount++;
+            if (self->_errorCount <= 3) {
+                self->_errorCount++;
                 [self loadData];
             }
             else {
@@ -47,7 +47,7 @@
         }
         else {
             [self createReloadButton];
-            [_textView setText:loadObject.outputText];
+            [self->_textView setText:loadObject.outputText];
             // TODO: Find better way to load data
             if ([loadObject.response.allHeaderFields objectForKey:@"X-More-Data"]) {
                 [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(loadData) userInfo:nil repeats:NO];

@@ -28,8 +28,8 @@
     _isLoading = YES;
     FTAPIUsersDataObject *usersObject = [[FTAPIUsersDataObject alloc] init];
     [FTAPIConnector connectWithObject:usersObject andOnCompleteBlock:^(id<FTAPIDataAbstractObject> dataObject, NSError *error) {
-        _users = usersObject.users;
-        _isLoading = NO;
+        self->_users = usersObject.users;
+        self->_isLoading = NO;
         [self.tableView reloadData];
     }];
 }
