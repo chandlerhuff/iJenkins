@@ -1,71 +1,70 @@
 opt_out_usage
-fastlane_version "2.13.0"
+fastlane_version '2.105.0'
 
 default_platform :ios
 
 platform :ios do
-
-  desc "Submit a new Beta Build to Fabric"
+  desc 'Submit a new Beta Build to Fabric'
   lane :deploy_fabric do
     clear_derived_data
     clear_simulators
     setup_jenkins
     changelog = sh("git log --graph --pretty=format:'%s' --abbrev-commit #{ENV['GIT_PREVIOUS_SUCCESSFUL_COMMIT'] || 'HEAD^^^^^'}..HEAD")
     puts changelog
-    gym(scheme: "iJenkins",
+    gym(scheme: 'iJenkins',
         clean: true,
         include_symbols: true,
         include_bitcode: true,
-        output_name: "iJenkins",
-        output_directory: "./fastlane/builds",
-        export_method: "ad-hoc")
+        output_name: 'iJenkins',
+        output_directory: './fastlane/builds',
+        export_method: 'ad-hoc')
     upload_symbols_to_crashlytics(
-      binary_path: "./Crashlytics.framework/uploadDSYM",
-      api_token: "#{ENV['FABRIC_API_KEY']}"
+      binary_path: './Crashlytics.framework/uploadDSYM',
+      api_token: (ENV['FABRIC_API_KEY']).to_s
     )
     crashlytics(
-      crashlytics_path: "./Crashlytics.framework",
-      api_token: "#{ENV['FABRIC_API_KEY']}",
-      build_secret: "#{ENV['FABRIC_BUILD_SECRET']}",
-      groups: "beta",
-      notes: "#{changelog.to_s}",
-      ipa_path: "./fastlane/builds/iJenkins.ipa",
+      crashlytics_path: './Crashlytics.framework',
+      api_token: (ENV['FABRIC_API_KEY']).to_s,
+      build_secret: (ENV['FABRIC_BUILD_SECRET']).to_s,
+      groups: 'beta',
+      notes: changelog.to_s,
+      ipa_path: './fastlane/builds/iJenkins.ipa',
       notifications: true
     )
     appcenter_upload(
-      api_token: "#{ENV['APPCENTER_API_TOKEN']}",
-      owner_name: "bludesign",
-      app_name: "iJenkins",
-      ipa: "./fastlane/builds/iJenkins.ipa",
-      dsym: "./fastlane/builds/iJenkins.app.dSYM.zip",
-      release_notes: "#{changelog.to_s}",
-      group: "Internal"
+      api_token: (ENV['APPCENTER_API_TOKEN']).to_s,
+      owner_name: 'bludesign',
+      app_name: 'iJenkins',
+      ipa: './fastlane/builds/iJenkins.ipa',
+      dsym: './fastlane/builds/iJenkins.app.dSYM.zip',
+      release_notes: changelog.to_s,
+      group: 'Internal'
     )
   end
 
-  desc "Generate and Download Certificates and Profiles"
+  desc 'Generate and Download Certificates and Profiles'
   lane :profiles do
     force = false
     readonly = true
-    match(type: "development",
+    match(type: 'development',
           force: force,
-          app_identifier: "com.BluDesign.Jenkins",
-          git_url: "#{ENV['CERTIFICATES_GIT']}",
-          username: "#{ENV['ITUNES_USERNAME']}",
+          app_identifier: 'com.BluDesign.Jenkins',
+          git_url: (ENV['CERTIFICATES_GIT']).to_s,
+          username: (ENV['ITUNES_USERNAME']).to_s,
           force_for_new_devices: true,
           readonly: readonly)
-    match(type: "adhoc",
+    match(type: 'adhoc',
           force: force,
-          app_identifier: "com.BluDesign.Jenkins",
-          git_url: "#{ENV['CERTIFICATES_GIT']}",
-          username: "#{ENV['ITUNES_USERNAME']}",
+          app_identifier: 'com.BluDesign.Jenkins',
+          git_url: (ENV['CERTIFICATES_GIT']).to_s,
+          username: (ENV['ITUNES_USERNAME']).to_s,
           force_for_new_devices: true,
           readonly: readonly)
-    match(type: "appstore",
+    match(type: 'appstore',
           force: force,
-          app_identifier: "com.BluDesign.Jenkins",
-          git_url: "#{ENV['CERTIFICATES_GIT']}",
-          username: "#{ENV['ITUNES_USERNAME']}",
+          app_identifier: 'com.BluDesign.Jenkins',
+          git_url: (ENV['CERTIFICATES_GIT']).to_s,
+          username: (ENV['ITUNES_USERNAME']).to_s,
           force_for_new_devices: true,
           readonly: readonly)
   end
@@ -73,14 +72,13 @@ platform :ios do
   def clear_simulators
     sh("osascript -e 'tell application \"iOS Simulator\" to quit'")
     sh("osascript -e 'tell application \"Simulator\" to quit'")
-    sh("xcrun simctl erase all")
+    sh('xcrun simctl erase all')
   end
 
-  error do |lane, exception|
+  error do |_lane, exception|
     slack(
       message: exception.message,
       success: false
     )
   end
-
 end

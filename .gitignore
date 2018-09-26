@@ -36,7 +36,8 @@ playground.xcworkspace
 ## fastlane
 fastlane/builds
 fastlane/report.xml
-fastlane/screenshots
+fastlane/screenshots/*/*.png
 fastlane/profiles
 fastlane/Appfile
 fastlane/Deliverfile
+Gemfile.lock
