@@ -7,7 +7,6 @@ platform :ios do
   desc 'Submit a new Beta Build to Fabric'
   lane :deploy_fabric do
     clear_derived_data
-    clear_simulators
     setup_jenkins
     changelog = sh("git log --graph --pretty=format:'%s' --abbrev-commit #{ENV['GIT_PREVIOUS_SUCCESSFUL_COMMIT'] || 'HEAD^^^^^'}..HEAD")
     puts changelog
@@ -73,12 +72,6 @@ platform :ios do
           username: (ENV['ITUNES_USERNAME']).to_s,
           force_for_new_devices: true,
           readonly: readonlyAppStore)
-  end
-
-  def clear_simulators
-    sh("osascript -e 'tell application \"iOS Simulator\" to quit'")
-    sh("osascript -e 'tell application \"Simulator\" to quit'")
-    sh('xcrun simctl erase all')
   end
 
   error do |_lane, exception|
