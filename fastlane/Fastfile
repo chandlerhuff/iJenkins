@@ -43,9 +43,15 @@ platform :ios do
   end
 
   desc 'Generate and Download Certificates and Profiles'
-  lane :profiles do
+  lane :profiles do |options|
     force = false
+    force = true if options[:force]
     readonly = true
+    readonly = false if options[:force]
+    forceAppStore = false
+    forceAppStore = true if options[:forceAppStore]
+    readonlyAppStore = true
+    readonlyAppStore = false if options[:forceAppStore]
     match(type: 'development',
           force: force,
           app_identifier: 'com.BluDesign.Jenkins',
@@ -61,12 +67,12 @@ platform :ios do
           force_for_new_devices: true,
           readonly: readonly)
     match(type: 'appstore',
-          force: force,
+          force: forceAppStore,
           app_identifier: 'com.BluDesign.Jenkins',
           git_url: (ENV['CERTIFICATES_GIT']).to_s,
           username: (ENV['ITUNES_USERNAME']).to_s,
           force_for_new_devices: true,
-          readonly: readonly)
+          readonly: readonlyAppStore)
   end
 
   def clear_simulators
