@@ -4,6 +4,7 @@
 
 source 'https://rubygems.org'
 
+gem 'google-cloud-storage', '1.16.0'
 gem 'fastlane'
 
 plugins_path = File.join(File.dirname(__FILE__), 'fastlane', 'Pluginfile')
