@@ -37,7 +37,7 @@ platform :ios do
       ipa: './fastlane/builds/iJenkins.ipa',
       dsym: './fastlane/builds/iJenkins.app.dSYM.zip',
       release_notes: changelog.to_s,
-      group: 'Internal'
+      destinations: 'Internal'
     )
   end
 
