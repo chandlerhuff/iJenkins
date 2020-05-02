@@ -21,14 +21,12 @@ platform :ios do
       binary_path: './Crashlytics.framework/uploadDSYM',
       api_token: (ENV['FABRIC_API_KEY']).to_s
     )
-    crashlytics(
-      crashlytics_path: './Crashlytics.framework',
-      api_token: (ENV['FABRIC_API_KEY']).to_s,
-      build_secret: (ENV['FABRIC_BUILD_SECRET']).to_s,
-      groups: 'beta',
-      notes: changelog.to_s,
+    firebase_app_distribution(
+      app: '1:257217212216:ios:01006b21175d030fc2dbcd',
+      release_notes: changelog.to_s,
+      groups: 'internal',
       ipa_path: './fastlane/builds/iJenkins.ipa',
-      notifications: true
+      firebase_cli_token: (ENV['FIREBASE_TOKEN']).to_s
     )
     appcenter_upload(
       api_token: (ENV['APPCENTER_API_TOKEN']).to_s,
